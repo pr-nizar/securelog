@@ -63,7 +63,7 @@ make -f win32/Makefile.gcc install INCLUDE_PATH=build/include LIBRARY_PATH=build
 cd openssl
 CROSS_COMPILE="i586-mingw32msvc-" ./Configure mingw --prefix=$(pwd)/build \
 --openssldir=$(pwd)/build --with-zlib-lib=$(pwd)/../zlib/build/lib \
---with-zlib-include=$(pwd)/../zlib/build/include no-shared --disable-capieng
+--with-zlib-include=$(pwd)/../zlib/build/include no-shared disable-capieng
 PATH=$PATH:/usr/i586-mingw32msvc/bin make depend
 PATH=$PATH:/usr/i586-mingw32msvc/bin make
 PATH=$PATH:/usr/i586-mingw32msvc/bin make install
