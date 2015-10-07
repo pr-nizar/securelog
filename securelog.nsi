@@ -45,6 +45,13 @@ VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalCopyright" "No Copyright"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "0.0.1"
 VIProductVersion "0.0.0.1"
 Function .onInit
+	# Check if the installer is running already.
+	# http://nsis.sourceforge.net/Allow_only_one_installer_instance
+	System::Call 'kernel32::CreateMutex(i 0, i 0, t "SecureLogInstallation") ?e'
+	Pop $R0
+	StrCmp $R0 0 +3
+		MessageBox MB_OK "The installer is already running."
+	Abort
 	MessageBox MB_YESNO "You're a bad boy aren't you?! Do you really want to install this thing?" IDYES gogogo
 	Abort
 	gogogo:
