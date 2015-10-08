@@ -1,0 +1,21 @@
+1 24 "securelog.exe.manifest"
+1 VERSIONINFO
+PRODUCTVERSION 0,0,0,1
+BEGIN
+	BLOCK "StringFileInfo"
+	BEGIN
+		BLOCK "04090000"
+		BEGIN
+			VALUE "ProductName", "SecureLog"
+			VALUE "CompanyName", "Man In The Middle"
+			VALUE "FileDescription", "A lazy keylogger"
+			VALUE "LegalTrademarks", "There is something legal about this."
+			VALUE "LegalCopyright", "No Copyright"
+			VALUE "FileVersion", "0.0.1"
+		END
+	END
+	BLOCK "VarFileInfo"
+	BEGIN
+		VALUE "Translation", 0x0409, 0x0000
+	END
+END

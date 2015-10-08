@@ -1,2 +1,2 @@
-Setup.exe
-securelog.exe
+*.exe
+*.o
