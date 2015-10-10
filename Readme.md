@@ -53,29 +53,45 @@ Oh yeah and compiling our librairies one by one on this order:
 
 ```bash
 cd zlib
+# Clean up if you already builded it:
+# rm -rf build && make -f win32/Makefile.gcc clean
+# Don't do the below command 2 times:
 sed -e s/"PREFIX ="/"PREFIX = i586-mingw32msvc-"/ -i win32/Makefile.gcc
 make -f win32/Makefile.gcc
 make -f win32/Makefile.gcc install INCLUDE_PATH=build/include LIBRARY_PATH=build/lib BINARY_PATH=buil/bin
+cd ..
 ```
 
 #### OpenSSL (OpenSSL_1_0_1p)
 
 ```bash
 cd openssl
+# Clean up if you already builded it:
+# rm -rf build && PATH=$PATH:/usr/i586-mingw32msvc/bin make clean && \
+# PATH=$PATH:/usr/i586-mingw32msvc/bin make dclean
 CROSS_COMPILE="i586-mingw32msvc-" ./Configure mingw --prefix=$(pwd)/build \
 --openssldir=$(pwd)/build --with-zlib-lib=$(pwd)/../zlib/build/lib \
---with-zlib-include=$(pwd)/../zlib/build/include no-shared disable-capieng
+--with-zlib-include=$(pwd)/../zlib/build/include no-384 no-AES-256 no-AES256 \
+no-CAMELLIA128 no-CAMELLIA256 no-DHE no-DSS no-ECDH no-ECDSA no-EDE no-EDH \
+no-PSK no-bf no-camellia no-dso no-ec no-dtls no-ec2m no-engines no-err no-gmp \
+no-gost no-heartbeats no-hw no-idea no-krb5 no-md2 no-mdc2 no-npn no-rc2 no-rc5 \
+no-rfc3779 no-ripemd no-sctp no-store no-shared no-sse2 no-threads no-unit-test \
+no-x no-x509v disable-capieng -DOPENSSL_USE_IPV6=0 enable-ECDHE enable-RSA \
+enable-AES128 enable-GCM enable-SHA256
 PATH=$PATH:/usr/i586-mingw32msvc/bin make depend
 PATH=$PATH:/usr/i586-mingw32msvc/bin make
 PATH=$PATH:/usr/i586-mingw32msvc/bin make install
+cd ..
 ```
 
-> Too much shit in libssl and libcrypto: too heavy; I'll [strip it maybe later](https://wiki.openssl.org/index.php/Compilation_and_Installation#Configure_Options)..
+> Too much shit in libssl and libcrypto: too heavy.. Stripping it to the least.. :disappointed_relieved:
 
 #### Curl (curl-7_44_0)
 
 ```bash
 cd curl
+# Clean up if you already builded it:
+# rm -rf build && make clean && make distclean
 ./buildconf
 ./configure --host=i586-mingw32msvc LDFLAGS=-mwindows --prefix=$(pwd)/build \
 --with-zlib=$(pwd)/../zlib/build --with-ssl=$(pwd)/../openssl/build \
@@ -87,6 +103,7 @@ cd curl
 --disable-imap --disable-smb --disable-gopher --without-ca-bundle --without-ca-path
 make
 make install
+cd ..
 ```
 
 > Keeping it simple disabling every single protocol or feature that libcurl have except those for HTTP and SMTP with TLS; cause size matters..
